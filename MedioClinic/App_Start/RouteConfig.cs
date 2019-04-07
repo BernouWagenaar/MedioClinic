@@ -28,12 +28,39 @@ namespace MedioClinic
             Route route = routes.MapRoute(
                 name: "DefaultWithCulture",
                 url: "{culture}/{controller}/{action}/{id}",
-                defaults: new { culture = defaultCulture.Name, controller = "Home", action = "Index", id = UrlParameter.Optional },
+                defaults: new {
+                    culture = defaultCulture.Name,
+                    controller = "Home",
+                    action = "Index",
+                    id = UrlParameter.Optional
+                },
                 constraints: new {
                     // Constrains the culture parameter to cultures allowed by the site.
-                    culture = new SiteCultureConstraint(AppConfig.SiteName),
+                    culture = new SiteCultureConstraint(AppConfig.Sitename),
                     // Constrains the optional id parameter to the integer data type
                     id = new OptionalRouteConstraint(new IntRouteConstraint())
+                }
+            );
+
+            // Assigns the custom handler to the route
+            // Sets the culture of the current thread based on the 'culture' route parameter
+            route.RouteHandler = new MultiCultureMvcRouteHandler();
+
+            // Maps route to doctor detail
+            route = routes.MapRoute(
+                name: "DoctorWithAlias",
+                url: "{culture}/Doctors/Detail/{nodeGuid}/{nodeAlias}",
+                defaults: new {
+                    action = "Detail",
+                    controller = "Doctors",
+                    culture = defaultCulture.Name,
+                    nodeGuid = string.Empty,
+                    nodeAlias = ""
+                },
+                constraints: new {
+                    culture = new SiteCultureConstraint(AppConfig.Sitename),
+                    nodeGuid = new GuidRouteConstraint(),
+                    nodeAlias = new OptionalRouteConstraint(new AlphaRouteConstraint())
                 }
             );
 

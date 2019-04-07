@@ -2,6 +2,6 @@
 {
     public static class AppConfig
     {
-        public const string SiteName = "MedioClinic";
+        public const string Sitename = "MedioClinic";
     }
 }

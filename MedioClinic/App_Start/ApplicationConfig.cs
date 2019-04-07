@@ -8,9 +8,7 @@ namespace MedioClinic
         public static void RegisterFeatures(IApplicationBuilder builder)
         {
             // Enable required Kentico features
-
-            // builder.UsePreview();
-            // ...
+            builder.UsePreview();
         }
     }
 }
